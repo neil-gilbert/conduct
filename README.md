@@ -64,6 +64,21 @@ finally:
 
 The [payment example](examples/payments.py) and [behavioural tests](tests/test_payments.py) cover declines, suspended accounts, retries, persistence, and diagnostic output, without assertions against internal calls.
 
+## Try it with FastAPI
+
+The [FastAPI payments project](examples/fastapi-payments) is an independently installable HTTP API with SQLite storage and Conduct tests. From the repository root:
+
+```sh
+cd examples/fastapi-payments
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install -e '.[test]'
+python -m unittest discover -s tests -v
+uvicorn conduct_payments.main:create_app --factory --reload
+```
+
+Its tests drive HTTP requests and assert that successful payments are persisted, declined payments are not, and suspended accounts never contact the provider. See its [README](examples/fastapi-payments/README.md) for request examples and setup details.
+
 ## Selection and expectations
 
 Selections match exact names and an attribute subset across **all traces in an observation**. They are immutable, composable queries, not assertions:

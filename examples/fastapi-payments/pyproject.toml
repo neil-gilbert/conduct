@@ -1,0 +1,29 @@
+[build-system]
+requires = ["hatchling>=1.26"]
+build-backend = "hatchling.build"
+
+[project]
+name = "conduct-fastapi-payments"
+version = "0.1.0"
+description = "A small FastAPI application tested through its public API with Conduct"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115,<1",
+    "pydantic>=2.7,<3",
+    "uvicorn>=0.30,<1",
+    "opentelemetry-api>=1.44,<2",
+    "opentelemetry-sdk>=1.44,<2",
+]
+
+[project.optional-dependencies]
+test = [
+    "httpx>=0.28,<1",
+    "conduct @ git+https://github.com/neil-gilbert/conduct.git@dff9acea2da00f84a2d58c34e75c2f33af8038e1",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/conduct_payments"]
