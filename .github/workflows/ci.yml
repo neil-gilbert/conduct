@@ -1,0 +1,24 @@
+name: Python library
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ['3.11', '3.12', '3.13', '3.14']
+        sdk: ['minimum', 'latest']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install -e '.[dev]'
+      - if: matrix.sdk == 'minimum'
+        run: python -m pip install 'opentelemetry-sdk==1.44.0'
+      - run: python -m unittest discover -s tests -v
+      - run: python -m examples.payments
+      - run: ruff check src tests examples
+      - run: ruff format --check src tests examples
+      - run: python -m build
